@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+	body {
+		height: 100vh;
+		width: 100vw;
+		margin:0;
+		background-color: hsl(220,50%,70%);
+	}
+	.start{
+		position: fixed;
+		top: 18.2%;
+		left: 3.5%;
+		height: 60vh;
+		width: 90%;
+		display: block;
+		background-color: purple;
+		z-index: 1000;
+	}
+	.close{
+		position: fixed;
+		top: 0%;
+		left: 0%;
+		
+	}
+	.floor{
+		position: absolute;
+		top: 80%;
+		left: 0%;
+		display: block;
+		height: 20vh;
+		width: 200%;
+		background-color: #5E2c04;
+		opacity: 1;
+		z-index: 999;
+	}
+	#charac{
+		position: absolute;
+		top: 50%;
+		left: 10%;
+		display: block;
+		height: 30vh;
+		width: 7%;
+		background-color: black;
+		
+	}
+	#a{
+		position: absolute;
+		top: 90%;
+		left: 30%;
+		display: block;
+		height: 10vh;
+		width: 10%;
+		background-color: green;
+		transition: 0s;
+	}
+	#b{
+		position: absolute;
+		top: -20%;
+		left: 10%;
+		display: block;
+		height: 10vh;
+		width: 10%;
+		background-color: green;
+	}
+	#c{
+		position: absolute;
+		top: 60%;
+		left: 50%;
+		display: block;
+		height: 5vh;
+		width: 40%;
+		background-color: green;
+	}
+
+
+	</style>
+	<title></title>
+</head>
+<body>
+	<dir id="start" class="start"></dir>
+	<div class="floor"></div>
+	<div id="charac"></div>
+	<div id="a">1</div>
+	<div id="b">2</div>
+	<div id="c">3</div>
+	<dir id="d">4</dir>
+
+<script type="text/javascript">
+		var up = false;
+		var down = false;
+		var left = false;
+		var right = false;
+		var start = false;
+		grow = 50;
+		x = 10;
+		y = 50;
+		stax = 0;
+		h = 30;
+		w = 7;
+		gavity();
+		tbs1 = 90;
+		tbs2 = -20;
+		tbs3 = 60;
+
+		boxa =false;
+		boxb = false;
+		document.addEventListener('keydown',press)
+		function press(e){
+			if (e.keyCode === 38)
+			{
+				document.getElementById("start").setAttribute("class", "close");
+				start =true;
+			}
+			if (e.keyCode === 32){
+				up = true;
+			}
+			if (e.keyCode === 40){
+				down = true;
+			}
+			if (e.keyCode === 39){
+				right = true;
+			}
+			if (e.keyCode === 37){
+				left = true;
+			}
+		}
+		document.addEventListener('keyup',release)  /*32 = spacebar*/
+		function release(e){
+  			if (e.keyCode === 32 /* up */ || e.keyCode === 87 /* w */ || e.keyCode === 90 /* z */){
+    			up = false;
+  			}
+  			if (e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */){
+    			right = false;
+  			}
+  			if (e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */){
+   				down = false;
+  			}
+  			if (e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */ || e.keyCode === 81 /* q */){
+    			left = false;
+  			}
+		}
+		function gameLoop(){
+  			var div = document.querySelector('#charac')
+  			if (start) 
+  			{
+  				if (x>=20) {boxa=true;}
+  				if (boxa) {
+  					check(tbs1,30,10,10);
+  					var a = document.querySelector("#a");
+  					var cha = document.querySelector("#charac");
+
+  					if (start&&tbs1>=20){
+  						if (true&&y>=tbs1-h&&x>=30-(w-1)&&x<=30+(10-1)) {
+  							y = y -2;
+  							cha.style.top = y+"%";
+  						}
+  						tbs1 =  tbs1-1;
+  						a.style.top = (tbs1-1)+"%";
+  						
+  						check(tbs1,30,10,10);
+  					}boxb=true;
+  				}check(tbs1,30,10,10);
+
+  				if (boxb) {
+  					check(tbs2,10,10,10);
+  					var b = document.querySelector("#b");
+  					var cha = document.querySelector("#charac");
+  					if ( boxb&&tbs2<80) 
+  					{
+  						if (true&&y===tbs2+10&&x>=10-(w-1)&&x<=10+(10-1)) {
+  							y += 2;
+  							cha.style.top = y+"%";
+  						}
+  						tbs2 = tbs2+1;
+  						b.style.top = (tbs2+1)+"%";
+
+  						check(tbs2,10,10,10);
+  					}
+  				}check(tbs2,10,10,10);
+
+				check(60,50,5,40);
+				
+  			}
+  			if (up){
+  				y = y - 4;
+  				
+  			}
+  			if (right){
+    			x = x + 1;
+    			
+  			}
+  			if (down){
+    			y = y + 1;
+    			
+  			}
+  			if (left){
+    			x = x - 1;
+    			
+  			}
+  
+  			div.style.top = y+'%';
+  			div.style.left = x+'%';
+  			window.requestAnimationFrame(gameLoop)
+		}
+		/*if (x!=0||y!=0) {
+			check(70,30,10,10);
+			check(40,50,5,40);
+		}*/
+		function gavity(){
+			var too = document.querySelector('#charac');
+			if (y<grow) {
+				y = y + 1;
+				too.style.top = y+'%';
+			}window.requestAnimationFrame(gavity)
+			}
+
+			/*เช็คว่าคนชนวัตถุรึเปล่า*/
+		function check(tb,lb,hb,wb)
+		{
+			if (x>=(lb-w)-0.3&&y>=(tb-h)&&y<=(tb+(hb-0.1))&&x<=(lb-w)) 
+			{
+				right = false;
+				grow = 50;
+			}
+
+			if (y<=(tb-(h-0.1))&&x>=(lb-(w-0.5))&&x<=(lb+(wb-0.1))) 
+			{
+				grow = tb-(h-0.1);
+			}
+
+			if (x>=(lb+wb)&&y>=(tb-h)&&y<=(tb+(hb-0.1))&&x<=(lb+wb))
+			{
+				left = false;
+				grow = 50;
+			}
+			if (y>=tb&&y<=tb+hb+0.3&&x>=lb-(w-0.1)&&x<=lb+(wb-0.1)) 
+			{
+				up = false;
+			}
+
+		}
+		
+		window.requestAnimationFrame(gameLoop)
+</script>
+
+</body>
+</html>
